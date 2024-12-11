@@ -1,19 +1,42 @@
-// Array of queries and their corresponding tile IDs, might not use this
-const queries = [
-    { query: 'SELECT name, length FROM Song WHERE explicit = false AND TIME_TO_SEC(length) < 240', tileId: 'tile1' },
-    { query: "SELECT name FROM SONG WHERE artist = 'Tyler, The Creator' ORDER BY name", tileId: 'tile2' },
-    { query: 'SELECT name FROM Album WHERE explicit = false', tileId: 'tile3' },
-    { query: "SELECT name FROM Album WHERE type = 'LP'", tileId: 'tile4' },
-    // Add the rest of the queries for tiles 5 to 21
-];
+document.getElementById('search').addEventListener('input', function () {
+    const query = this.value.trim(); // Get the search input
+    console.log('Search Query:', query); // Debugging
 
-// Default text for tiles
+    fetch(`search.php?query=${encodeURIComponent(query)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const resultsContainer = document.getElementById('result');
+            resultsContainer.innerHTML = ''; // Clear previous results
 
+            if (data.length > 0) {
+                const table = document.createElement('table');
+                table.innerHTML = '<tr><th>Song Name</th><th>Artist</th></tr>';
+
+                data.forEach(row => {
+                    table.innerHTML += `<tr><td>${row.name}</td><td>${row.artist}</td></tr>`;
+                });
+
+                resultsContainer.appendChild(table);
+            } else {
+                resultsContainer.textContent = 'No results found.';
+            }
+
+            console.log('Data received:', data); // Debugging
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+        });
+});
 
 
 
 // Fetch and display results of top 10 artists in tile-2
-function fetchTile2Data() {
+function fetchTile1Data() {
     fetch("query1.php")
         .then((response) => {
             if (!response.ok) {
@@ -22,15 +45,15 @@ function fetchTile2Data() {
             return response.json();
         })
         .then((data) => {
-            const tile2 = document.getElementById("tile-2"); // Use ID to target tile-2
+            const tile1 = document.getElementById("tile-1"); // Use ID to target tile-2
 
              // Clear existing content
-             tile2.innerHTML = "";
+             tile1.innerHTML = "";
 
              // Add a title or description
              const title = document.createElement("h3");
              title.textContent = "--  Top 10 Artists in the World  --";
-             tile2.appendChild(title);
+             tile1.appendChild(title);
 
             if (data.length > 0) {
 
@@ -51,16 +74,16 @@ function fetchTile2Data() {
                 });
 
                 // Append the list to tile-3
-                tile2.appendChild(list);
+                tile1.appendChild(list);
             } else {
                 // Handle case where no results are returned
-                tile2.innerHTML = "<p>No results found.</p>";
+                tile1.innerHTML = "<p>No results found.</p>";
             }
         })
         .catch((error) => {
             console.error("Error fetching data:", error);
-            const tile2 = document.getElementById("tile-3");
-            tile2.innerHTML = "<p>Error fetching data.</p>";
+            const tile1 = document.getElementById("tile-3");
+            tile1.innerHTML = "<p>Error fetching data.</p>";
         });
 }
 
@@ -118,59 +141,6 @@ function fetchTile3Data() {
 
 
 
-async function fetchTileData4() {
-    
-    try {
-        // Fetch data from the PHP file
-        const response = await fetch('query3.php');
-        
-        // Check if the response is OK
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        // Parse the JSON response
-        const data = await response.json();
-
-        // Group data by playlistID
-        const groupedPlaylists = data.reduce((acc, curr) => {
-            if (!acc[curr.playlistID]) {
-                acc[curr.playlistID] = { title: curr.title, length: curr.length, count: curr.songCount, songs: [] };
-            }
-            acc[curr.playlistID].songs.push({ song: curr.song, artist: curr.artist });
-            return acc;
-        }, {});
-
-        // Get the container where playlists will be rendered
-        const container = document.getElementById('tile-4');
-        const title = document.createElement("h2");
-        title.textContent = "-- Combining 2 Playlists into 1 --";
-        // Render each playlist and its songs
-        for (const [playlistID, playlistData] of Object.entries(groupedPlaylists)) {
-            // Create playlist tile
-            const playlistTile = document.createElement('div');
-            playlistTile.classList.add('playlist-tile');
-            playlistTile.innerHTML = `<h3>Playlist #${playlistID}: ${playlistData.title} 
-            (${playlistData.count}) (${playlistData.length})</h2>`;
-            
-            // Create a list of songs
-            const songList = document.createElement('ul');
-            playlistData.songs.forEach(songData => {
-                const songItem = document.createElement('li');
-                songItem.textContent = `"${songData.song}" by ${songData.artist}`;
-                songList.appendChild(songItem);
-            });
-
-            // Append songs to the playlist tile
-            playlistTile.appendChild(songList);
-
-            // Append the playlist tile to the container
-            container.appendChild(playlistTile);
-        }
-    } catch (error) {
-        console.error('Error fetching or processing data:', error);
-    }
-}
 
 // Fetch and display results of #2 artist's discography in chronological order w/top hits in tile-3
 function fetchTile5Data() {
@@ -279,32 +249,14 @@ function fetchTile6Data() {
         });
 }
 
-// Array of text lines for each tile
-const tileTexts = [
-    ["MUSIC SYSTEM 440 FINAL PROJECT", "Designed & Presented by:", "Diego Arteaga, Gerardo Espinoza Garcia, Kenneth Riles (Group 5)"]
-];
-// Function to populate a tile with multiple lines of text
-function populateTiles() {
-    console.log(12);
-    tileTexts.forEach((texts, index) => {
-        const tile = document.getElementById(`tile-${index + 1}`);
-        if (tile) {
-            texts.forEach(line => {
-                const p = document.createElement('p');
-                p.textContent = line;
-                tile.appendChild(p);
-            });
-        }
-    });
-}
+
 
 // Call the function to populate tiles when the page loads
 
-window.onload = populateTiles;
-fetchTile2Data();
-fetchTile3Data();
-fetchTileData4();
-fetchTile5Data();
-fetchTile6Data();
+//window.onload = populateTiles;
+//fetchTile2Data();
+fetchTile1Data();
 
+// change 1 to app icon and name, 2-search song, 3-artist disco, 4-top 10 artists
+// 5-search playlists, 6--search artist
 

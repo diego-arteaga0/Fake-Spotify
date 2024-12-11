@@ -2,6 +2,10 @@
 <?php 
 include 'config.php';
 
+$query = isset($_GET['query']) ? trim($_GET['query']) : '';
+
+$query = $conn->real_escape_string($query);
+
 //show top 10 artists
 $sql = "SELECT a.name AS artist, a.ranking, s.name AS topSong, a.listeners
 FROM Artist a

@@ -1,7 +1,7 @@
 <?php  //this file connects to your local mySQLWorkbench
 $servername = "localhost";
 $username = "root";             // your MySQL username
-$password = " ";      // put your MySQL password
+$password = "wumBo@ny9403";      // put your MySQL password
 $dbname = "music";              // name of your database
 
 // Create connection
