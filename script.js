@@ -1,41 +1,115 @@
-document.getElementById('search').addEventListener('input', function () {
-    const query = this.value.trim(); // Get the search input
-    console.log('Search Query:', query); // Debugging
+let allSongs = []; // Global array to store all songs
+let likedSongs = []; // Global array to store user's liked songs
 
-    fetch(`search.php?query=${encodeURIComponent(query)}`)
+// Fetch all songs from the server when the page loads
+function fetchAllSongs() {
+    fetch('search.php')
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
-            const resultsContainer = document.getElementById('result');
-            resultsContainer.innerHTML = ''; // Clear previous results
-
-            if (data.length > 0) {
-                const table = document.createElement('table');
-                table.innerHTML = '<tr><th>Song Name</th><th>Artist</th></tr>';
-
-                data.forEach(row => {
-                    table.innerHTML += `<tr><td>${row.name}</td><td>${row.artist}</td></tr>`;
-                });
-
-                resultsContainer.appendChild(table);
-            } else {
-                resultsContainer.textContent = 'No results found.';
-            }
-
-            console.log('Data received:', data); // Debugging
+            allSongs = data; // Store all songs in the global array
+            console.log("All Songs Fetched:", allSongs); // Debugging: Log all songs
         })
         .catch(error => {
-            console.error('Fetch Error:', error);
+            console.error("Error fetching all songs:", error);
         });
-});
+}
+
+// Filter songs based on the user's input
+function filterSongs(query) {
+    const resultsDiv = document.getElementById("result");
+    resultsDiv.innerHTML = ""; // Clear previous results
+
+    // If the query is empty, show a prompt and return
+    if (!query.trim()) {
+        resultsDiv.textContent = "Start typing to search for a song!";
+        return;
+    }
+
+    // Filter the global array of songs based on the query
+    const filteredSongs = allSongs.filter(song =>
+        song.name.toLowerCase().includes(query.toLowerCase()) || 
+        song.artist.toLowerCase().includes(query.toLowerCase()) ||
+        song.album.toLowerCase().includes(query.toLowerCase())
+    );
+
+ // Display the filtered results in two columns
+ if (filteredSongs.length > 0) {
+    // Create a table to display results in two columns (song name and artist name)
+    const table = document.createElement("table");
+    table.style.width = "100%"; // Ensure table occupies full width
+
+    // Create a header row
+    const headerRow = document.createElement("tr");
+    const songHeader = document.createElement("th");
+    songHeader.textContent = "Song";
+    const artistHeader = document.createElement("th");
+    artistHeader.textContent = "Artist";
+    const actionHeader = document.createElement("th");
+    actionHeader.textContent = "Add"; // For the plus/minus icon column
+    headerRow.appendChild(songHeader);
+    headerRow.appendChild(artistHeader);
+    headerRow.appendChild(actionHeader);
+    table.appendChild(headerRow);
+
+    // Loop through the filtered songs and create a row for each
+    filteredSongs.forEach(song => {
+        const row = document.createElement("tr");
+
+        // Song Name
+        const songCell = document.createElement("td");
+        songCell.textContent = song.name;
+
+        // Artist Name
+        const artistCell = document.createElement("td");
+        artistCell.textContent = song.artist;
+
+        // Toggle button with plus/minus icon
+        const actionCell = document.createElement("td");
+        const toggleButton = document.createElement("button");
+        const isLiked = likedSongs.some(likedSong => likedSong.id === song.id);
+
+        toggleButton.textContent = isLiked ? "-" : "+"; // Show minus if already liked, plus if not
+      //  toggleButton.textContent = "+"; // Initially show plus sign
+        toggleButton.style.padding = "5px 10px";
+        toggleButton.style.cursor = "pointer";
+        toggleButton.onclick = function () {
+            // Toggle between plus and minus signs
+            if (isLiked) {
+                // Remove from likedSongs array
+                likedSongs = likedSongs.filter(likedSong => likedSong.id !== song.id);
+                toggleButton.textContent = "+"; // Change to plus sign
+            } else {
+                // Add to likedSongs array
+                likedSongs.push(song);
+                toggleButton.textContent = "-"; // Change to minus sign
+            }
+        };
+
+        // Add the song, artist, and toggle button to the row
+        row.appendChild(songCell);
+        row.appendChild(artistCell);
+        row.appendChild(actionCell);
+        actionCell.appendChild(toggleButton);
+
+        table.appendChild(row);
+    });
+
+    // Append the table to the results div
+    resultsDiv.appendChild(table);
+} else {
+    resultsDiv.textContent = "No results found.";
+}
+}
+// Fetch all songs when the page loads
+fetchAllSongs();
 
 
-
-// Fetch and display results of top 10 artists in tile-2
+// Fetch and display results of top 10 artists 
 function fetchTile1Data() {
     fetch("query1.php")
         .then((response) => {
@@ -45,12 +119,9 @@ function fetchTile1Data() {
             return response.json();
         })
         .then((data) => {
-            const tile1 = document.getElementById("tile-1"); // Use ID to target tile-2
+            const tile1 = document.getElementById("tile-1"); 
 
-             // Clear existing content
-             tile1.innerHTML = "";
-
-             // Add a title or description
+          
              const title = document.createElement("h3");
              title.textContent = "--  Top 10 Artists in the World  --";
              tile1.appendChild(title);
@@ -142,7 +213,7 @@ function fetchTile3Data() {
 
 
 
-// Fetch and display results of #2 artist's discography in chronological order w/top hits in tile-3
+// Fetch and display results for concert info
 function fetchTile5Data() {
     fetch("query4.php")
         .then((response) => {
@@ -196,67 +267,7 @@ function fetchTile5Data() {
         });
 }
 
-// fetch data for a user's 5 most used songs in their playlists
-function fetchTile6Data() {
-    fetch("query5.php")
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then((data) => {
-            const tile6 = document.getElementById("tile-6"); // Use ID to target tile-3
-
-             // Clear existing content
-             tile6.innerHTML = "";
-
-             // Add a title or description
-             const title = document.createElement("h3");
-             title.textContent = "-- User's Most Used Playlist Songs --";
-             tile6.appendChild(title);
-             
-            if (data.length > 0) {
-
-                // Create a list to display all results
-                const list = document.createElement("ul");
-                const listItem2 = document.createElement("h3");
-                listItem2.innerHTML = `<strong>Bobby's Most Used Songs</strong><br>
-                `;
-                list.appendChild(listItem2);
-                // Iterate over query results and populate the list
-                data.forEach((result) => {
-                    const listItem = document.createElement("li");
-                    listItem.innerHTML = `
-                       <strong>Song:</strong> "${result.name}" <br>
-                        <strong>Number of Playlists:</strong> ${result.count} <br><br>
-                      
-                    `;
-                    list.appendChild(listItem);
-                });
-
-                // Append the list to tile-3
-                tile6.appendChild(list);
-            } else {
-                // Handle case where no results are returned
-                tile6.innerHTML = "<p>No results found.</p>";
-            }
-        })
-        .catch((error) => {
-            console.error("Error fetching data:", error);
-            const tile6 = document.getElementById("tile-6");
-            tile6.innerHTML = "<p>Error fetching data.</p>";
-        });
-}
-
-
-
-// Call the function to populate tiles when the page loads
-
-//window.onload = populateTiles;
-//fetchTile2Data();
 fetchTile1Data();
 
-// change 1 to app icon and name, 2-search song, 3-artist disco, 4-top 10 artists
-// 5-search playlists, 6--search artist
+// 
 

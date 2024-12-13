@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    background-image: linear-gradient( #000000, rgb(16, 56, 35));
+    background-image: linear-gradient( #46584d, rgb(16, 56, 35));
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,14 +13,14 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(1, 1fr);
-    gap: 24px;
+    gap: 18px;
     width: 95vw; /* Fill most of the width of the screen */
-    height: 90vh; /* Fill most of the height of the screen */
+    height: 91vh; /* Fill most of the height of the screen */
 }
 
 .tile {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #000000;
+    color: #ffffff;
     display: flex;
     justify-content: start;
     align-items: center;
@@ -40,14 +40,14 @@ body {
 @media (max-width: 768px) {
     .container {
         grid-template-columns: repeat(3, 1fr); /* 3 columns for smaller screens */
-        grid-template-rows: repeat(7, 1fr); /* 7 rows to maintain 21 tiles */
+        grid-template-rows: repeat(1, 1fr); 
     }
 }
 #tile-1{
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
-#tile-4{
-    font-size: 1rem;
+#tile-2{
+    font-size: 0.95rem;
 }
 #tile-2 h2 {
     margin: 2 2 16px;
@@ -62,13 +62,14 @@ body {
 .search-bar input {
     width: 100%;
     padding: 6px;
+    align-items: center;
     font-size: 15px;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
 
 .results {
-    max-height: 200px;
+    max-height: 550px;
     overflow-y: auto;
     border-top: 1px solid #ddd;
     padding-top: 8px;

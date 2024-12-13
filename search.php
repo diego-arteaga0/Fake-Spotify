@@ -1,32 +1,32 @@
 <?php
-
 header('Content-Type: application/json');
 
-// MySQL connection
+// Include the database configuration
 include 'config.php';
 
-$query = isset($_GET['query']) ? trim($_GET['query']) : '';
+// Check the database connection
+if (!$conn) {
+    echo json_encode(["error" => "Failed to connect to the database."]);
+    exit();
+}
+// Query to fetch all tuples from the Song table
+$sql = "SELECT name, artist, album FROM Song ORDER BY listens DESC";
+$result = $conn->query($sql);
 
-    // Prevent SQL injection by escaping special characters
-    $query = $conn->real_escape_string($query);
+if ($result) {
+    if ($result->num_rows > 0) {
+        $rows = [];
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row; // Add each row to the array
+        }
+        echo json_encode($rows); // Output all rows as JSON
+    } else {
+        echo json_encode([]); // Return an empty array if no results
+    }
+} else {
+    echo json_encode(["error" => "Failed to execute query."]);
+}
 
-    // SQL query to search for songs where the name contains the query string
-    $sql = "SELECT name, artist FROM Song WHERE name LIKE '%$query%' 
-     ";
-   // Debugging: Print the SQL query
+$conn->close();
+?>
 
-   // Execute the query
-   $result = $conn->query($sql); 
-
-   if ($result->num_rows > 0) {
-       $rows = [];
-       while ($row = $result->fetch_assoc()) {
-           $rows[] = $row; // Add each row to the array
-       }
-       echo json_encode($rows); // Output as JSON
-   } else {
-       echo json_encode([]); // Return an empty array if no results
-   }
-   
-   $conn->close();
-   ?>
