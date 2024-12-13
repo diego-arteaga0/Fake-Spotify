@@ -1,1 +1,1 @@
-Rudimentary Spotify clone that works with MySQL database to display basic query results on a website. 
+Very basic Spotify clone that works with MySQL database of songs, artists, and albums. Includes rankings, real-time search bar to display song results as user types, and the ability to add songs to Liked Songs.
