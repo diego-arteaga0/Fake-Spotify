@@ -1,5 +1,5 @@
 let allSongs = []; // Global array to store all songs
-let likedSongs = []; // Global array to store liked songs
+let likedSongs = JSON.parse(localStorage.getItem('likedSongs')) || [];  // Load liked songs from localStorage if available
 
 // Fetch all songs from the server when the page loads
 function fetchAllSongs() {
@@ -19,12 +19,11 @@ function fetchAllSongs() {
         });
 }
 
-// Filter songs based on the user's input
+// Filter songs based on the user's input for all songs
 function filterSongs(query) {
     const resultsDiv = document.getElementById("result");
     resultsDiv.innerHTML = ""; // Clear previous results
 
-    // If the query is empty, show a prompt and return
     if (!query.trim()) {
         resultsDiv.textContent = "Start typing to search for a song!";
         return;
@@ -48,22 +47,62 @@ function filterSongs(query) {
     }
 }
 
-// Function to create a song row with a toggle button
+// Filter liked songs based on user's input
+function filterLikedSongs(query) {
+    const resultsDiv = document.getElementById("likedSongsList");
+    resultsDiv.innerHTML = ""; // Clear previous results
+
+    if (!query.trim()) {
+        resultsDiv.textContent = "Start typing to search for liked songs!";
+        return;
+    }
+
+    // Filter the likedSongs array based on the query
+    const filteredLikedSongs = likedSongs.filter(song =>
+        song.name.toLowerCase().includes(query.toLowerCase()) ||
+        song.artist.toLowerCase().includes(query.toLowerCase()) ||
+        song.album.toLowerCase().includes(query.toLowerCase())
+    );
+
+    // Display the filtered liked songs results
+    if (filteredLikedSongs.length > 0) {
+        filteredLikedSongs.forEach(song => {
+            const songElement = createSongRow(song);
+            resultsDiv.appendChild(songElement);
+        });
+    } else {
+        resultsDiv.textContent = "No liked songs found.";
+    }
+}
+
+// Create the song row UI (used for both search and liked songs)
 function createSongRow(song) {
     const songElement = document.createElement("div");
     songElement.classList.add("song-row");
 
-    const nameColumn = document.createElement("div");
-    nameColumn.classList.add("song-name");
-    nameColumn.textContent = song.name;
+    // Column for song name and artist
+    const infoColumn = document.createElement("div");
+    infoColumn.classList.add("song-info");
 
-    const artistColumn = document.createElement("div");
-    artistColumn.classList.add("song-artist");
-    artistColumn.textContent = song.artist;
+    // Song name
+    const nameElement = document.createElement("div");
+    nameElement.classList.add("song-name");
+    nameElement.textContent = song.name;
 
+    // Artist name (smaller and light grey)
+    const artistElement = document.createElement("div");
+    artistElement.classList.add("song-artist");
+    artistElement.textContent = song.artist;
+
+    // Append song name and artist to info column
+    infoColumn.appendChild(nameElement);
+    infoColumn.appendChild(artistElement);
+
+    // Column for toggle button
     const actionColumn = document.createElement("div");
     actionColumn.classList.add("song-action");
 
+    // Toggle button for like/unlike
     const toggleButton = document.createElement("button");
     toggleButton.textContent = likedSongs.some(
         likedSong => likedSong.name === song.name && likedSong.artist === song.artist
@@ -79,8 +118,8 @@ function createSongRow(song) {
 
     actionColumn.appendChild(toggleButton);
 
-    songElement.appendChild(nameColumn);
-    songElement.appendChild(artistColumn);
+    // Append columns to song element
+    songElement.appendChild(infoColumn);
     songElement.appendChild(actionColumn);
 
     return songElement;
@@ -94,12 +133,16 @@ function toggleLikeStatus(song) {
 
     if (index === -1) {
         likedSongs.push(song); // Add song to likedSongs
+        displayLikedSongs();
+
     } else {
         likedSongs.splice(index, 1); // Remove song from likedSongs
+        displayLikedSongs();
+
     }
 
     // Update the liked songs display
-    displayLikedSongs();
+    localStorage.setItem('likedSongs', JSON.stringify(likedSongs));
 }
 
 // Function to display liked songs in tile-3
@@ -113,9 +156,7 @@ function displayLikedSongs() {
     }
 
     likedSongs.forEach(song => {
-        const songElement = document.createElement("div");
-        songElement.classList.add("liked-song-item");
-        songElement.textContent = `${song.name} by ${song.artist}`;
+        const songElement = createSongRow(song);
         likedSongsList.appendChild(songElement);
     });
 }
@@ -123,16 +164,23 @@ function displayLikedSongs() {
 // Fetch all songs when the page loads
 fetchAllSongs();
 
-// Attach the search bar input event
+// Attach the search bar input event for all songs
 document.getElementById("search").addEventListener("input", (event) => {
     filterSongs(event.target.value);
 });
 
+// Attach the search bar input event for liked songs
+document.getElementById("searchLikes").addEventListener("input", (event) => {
+    filterLikedSongs(event.target.value);
+});
+
+// Display liked songs when the page loads
+displayLikedSongs();
 
 
 
 
-// Fetch and display results of top 10 artists 
+// Fetch and display results of top artists (based off number of listeners)
 function artistRankings() {
     fetch("artist.php")
         .then((response) => {
@@ -142,9 +190,10 @@ function artistRankings() {
             return response.json();
         })
         .then((data) => {
-            const tile1 = document.getElementById("tile-1"); 
+            const tile1 = document.getElementById("ranking-results");
 
-          
+            // Clear previous results
+            tile1.innerHTML = "";
              const title = document.createElement("h3");
              title.textContent = "--  Top Artists in the World  --";
              tile1.appendChild(title);
@@ -191,9 +240,10 @@ function songRankings() {
             return response.json();
         })
         .then((data) => {
-            const tile1 = document.getElementById("tile-1"); 
+            const tile1 = document.getElementById("ranking-results");
 
-          //tile1.innerHTML = "";
+            // Clear previous results
+            tile1.innerHTML = "";
           
              const title = document.createElement("h3");
              title.textContent = "--  Trending Songs  --";
@@ -241,9 +291,10 @@ function albumRankings() {
             return response.json();
         })
         .then((data) => {
-            const tile1 = document.getElementById("tile-1"); 
+            const tile1 = document.getElementById("ranking-results");
 
-          //tile1.innerHTML = "";
+            // Clear previous results
+            tile1.innerHTML = "";
           
              const title = document.createElement("h3");
              title.textContent = "--  Trending Albums  --";
@@ -260,7 +311,7 @@ function albumRankings() {
                     let listens = Number(result.listens);
                     listItem.innerHTML = `
                        <strong>#</strong> ${result.ranking} 
-                        <strong>:</strong> "${result.name}" <br>
+                        <strong>:</strong> ${result.name} <br>
                         <strong>Artist:</strong> ${result.artist} <br>
                         <strong>Listens:</strong> ${listens.toLocaleString()} <br><br>
                     `;
@@ -280,3 +331,6 @@ function albumRankings() {
             tile1.innerHTML = "<p>Error fetching data.</p>";
         });
 }
+
+//fix sizing of song results, change add button to red once added,
+//figure out way to store liked songs

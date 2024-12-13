@@ -23,6 +23,7 @@
             <div class="footer">
             <p>View current rankings!</p>
             </div>
+            <div id="ranking-results"></div>
             <div class="album-container">
             <img src= "media/art.jpg" alt="album cover" class="albumCover">
             </div>
@@ -41,7 +42,7 @@
 
         <div class="tile" id="tile-3">
             <h2>LIKED SONGS<br></h2>
-            <div class="search-bar">
+            <div class="search-bar" id="searchLikes">
                     <input type="text" id="search" placeholder="Find in liked songs" 
                     onkeyup="filterSongs(this.value)">
                 </div>

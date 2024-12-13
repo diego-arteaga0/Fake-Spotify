@@ -107,17 +107,41 @@ body {
 .song-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ccc;
 }
 
-.song-name, .song-artist, .song-action {
-    flex: 1;
-    text-align: left;
+.song-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.song-action {
-    text-align: right;
+.song-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.song-artist {
+    font-size: 0.85em;
+    color: #9d9d9d; /* Light grey */
+}
+
+.song-action button {
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    background-color: #25a914;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.song-action button:hover {
+    background-color: #ffffff;
 }
 
 .liked-songs {
