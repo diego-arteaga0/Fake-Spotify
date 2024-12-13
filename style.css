@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    background-image: linear-gradient( #46584d, rgb(16, 56, 35));
+    background-image: linear-gradient( #000000, rgb(0, 0, 0));
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,7 +19,7 @@ body {
 }
 
 .tile {
-    background-color: #000000;
+    background-color: #181918;
     color: #ffffff;
     display: flex;
     justify-content: start;
@@ -49,11 +49,22 @@ body {
 #tile-2{
     font-size: 0.95rem;
 }
-#tile-2 h2 {
+.tile h2 {
     margin: 2 2 16px;
     font-size: 20px;
     text-align: center;
 }
+
+
+.liked-songs {
+    margin-top: 10px;
+}
+
+.liked-song-item {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
 
 .search-bar {
     margin-bottom: 16px;
@@ -93,3 +104,89 @@ body {
     color: #666;
     margin-top: 8px;
 }
+.song-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.song-name, .song-artist, .song-action {
+    flex: 1;
+    text-align: left;
+}
+
+.song-action {
+    text-align: right;
+}
+
+.liked-songs {
+    margin-top: 10px;
+}
+
+.liked-song-item {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .header h2 {
+    font-size: 2em;
+    margin: 0;
+  }
+  
+  .header .logo {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .buttons-row {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    align-items: center;
+    gap: 10px; /* Space between buttons */
+    width: 100%; /* Align the buttons to fill the tile width */
+    margin-bottom: 20px; /* Space below the buttons */
+  }
+  
+  .buttons-row button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #2a2b2a;
+    border-radius: 5px;
+    color: #ffffff;
+    transition: background-color 0.3s;
+  }
+  
+  .buttons-row button:hover {
+    background-color: #3a3b3a;
+  }
+  
+  .footer {
+    font-size: 1em;
+    color: #aaaaaa;
+  }
+
+  .album-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1; /* Makes the album cover container take up the remaining space */
+    overflow: hidden; /* Ensures the image doesn't overflow its container */
+  }
+  
+  .albumCover {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: cover; /* Ensures the image scales proportionally to fit the container */
+    border-radius: 15px;
+  }

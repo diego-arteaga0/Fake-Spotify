@@ -1,18 +1,15 @@
-
 <?php 
 include 'config.php';
 
+$query = isset($_GET['query']) ? trim($_GET['query']) : '';
+
+$query = $conn->real_escape_string($query);
+
 //show top 10 artists
-$sql = "SELECT a.artist, a.name AS album, s.name AS topSong, YEAR(a.releaseDate) AS releaseYear
-FROM Album a
-INNER JOIN Artist r ON r.name = a.artist
-INNER JOIN Song s ON s.album = a.name
-WHERE a.artist = 'Tyler, The Creator' AND s.listens = (
-	SELECT MAX(s2.listens)
-    FROM Song s2
-    WHERE s2.album = a.name
-    )
-ORDER BY releaseDate;";
+$sql = "SELECT ranking, name, artist, listens
+FROM Song
+ORDER BY ranking
+LIMIT 25;"; 
 $result = $conn->query($sql); 
 
 if ($result->num_rows > 0) {

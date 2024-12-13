@@ -2,19 +2,11 @@
 <?php 
 include 'config.php';
 
-//show top 10 artists
-$sql = "SELECT 
-    c.location, 
-    c.showDate, 
-    TIME_FORMAT(c.showtime, '%H:%i') AS time, 
-    c.ticketPrice AS 'price', 
-    a.name AS 'featuring'
-FROM 
-    concert AS c, 
-    artist AS a
-WHERE 
-    c.artistID = a.artistID 
-    AND c.location = 'Rose Bowl Stadium';";
+//show top 20 albums
+$sql = "SELECT ranking, name, artist, listens
+FROM Album
+ORDER BY ranking
+LIMIT 20;"; 
 $result = $conn->query($sql); 
 
 if ($result->num_rows > 0) {
