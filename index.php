@@ -25,7 +25,7 @@
             </div>
             <div id="ranking-results"></div>
             <div class="album-container">
-            <img src= "media/art.jpg" alt="album cover" class="albumCover">
+            <img  alt="album cover" class="albumCover" id="albumArt">
             </div>
         </div>
 
@@ -44,15 +44,15 @@
             <h2>LIKED SONGS<br></h2>
             <div class="search-bar" id="searchLikes">
                     <input type="text" id="search" placeholder="Find in liked songs" 
-                    onkeyup="filterSongs(this.value)">
+                    onkeyup="filterLikedSongs(this.value)">
                 </div>
             <div class="liked-songs" id="likedSongsList">
             </div>
         </div>
         
-
+        <audio id="backgroundMusic" src="media/darling.mp3" preload='auto' autoplay loop>
     <script src="script.js"></script>
 
-<audio id="backgroundMusic" src="media/bgm.mp3" autoplay loop>
+
 </body>
 </html>

@@ -79,20 +79,7 @@ body {
     border-radius: 4px;
 }
 
-.results {
-    max-height: 550px;
-    overflow-y: auto;
-    border-top: 1px solid #ddd;
-    padding-top: 8px;
-}
 
-.results p {
-    margin: 8px 0;
-    padding: 8px;
-    background: #f9f9f9;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
 
 .results p:hover {
     background-color: #f0f0f0;
@@ -104,17 +91,41 @@ body {
     color: #666;
     margin-top: 8px;
 }
+
+#result {
+    width: 100%; /* Use full width of the parent */
+    max-width: 100%; /* Prevent going beyond the parent container */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: auto; /* Allow vertical scrolling if necessary */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between rows */
+}
+
 .song-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+    width: 100%;    
+    max-width: 100%;             /* Make the row fill the container */
+    min-width: 100%;               /* Optional: Set a minimum width for each row */
+
+    box-sizing: border-box;      /* Include padding in the row's width */
+
     border-bottom: 1px solid #ccc;
 }
 
 .song-info {
+    flex-grow: 1;                /* Allow this section to expand as needed */
+    padding-right: 20px;         /* Add spacing between info and button */
+
     display: flex;
     flex-direction: column;
+    overflow: hidden;               /* Prevent overflow of long text */
+    white-space: nowrap;            /* Prevent text from wrapping to the next line */
+    text-overflow: ellipsis;        /* Add ellipsis for long text */
+
     align-items: flex-start;
 }
 
@@ -129,10 +140,26 @@ body {
     color: #9d9d9d; /* Light grey */
 }
 
+.song-action {
+    flex-shrink: 0;         /* Prevent the action column from shrinking */
+    width: 50px;            /* Fixed width for the action column */
+    text-align: right;
+}
+
 .song-action button {
     font-size: 1.2rem;
     padding: 5px 10px;
-    background-color: #25a914;
+    background-color: #bababa;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.song-action button.red-button {
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    background-color: #808080;
     color: rgb(0, 0, 0);
     border: none;
     border-radius: 10px;
@@ -141,11 +168,15 @@ body {
 }
 
 .song-action button:hover {
-    background-color: #ffffff;
+    background-color: #5baf55;
+}
+.song-action button.red-button:hover {
+    background-color: #c01414;
 }
 
 .liked-songs {
-    margin-top: 10px;
+    margin-top: 0px;
+    width: 100%;
 }
 
 .liked-song-item {
@@ -180,7 +211,7 @@ body {
   }
   
   .buttons-row button {
-    padding: 10px 20px;
+    padding: 10px 16px;
     font-size: 1em;
     cursor: pointer;
     border: 1px solid #ccc;
@@ -191,7 +222,7 @@ body {
   }
   
   .buttons-row button:hover {
-    background-color: #3a3b3a;
+    background-color: #616161;
   }
   
   .footer {

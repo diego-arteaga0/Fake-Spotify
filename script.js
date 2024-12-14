@@ -3,6 +3,8 @@ let likedSongs = JSON.parse(localStorage.getItem('likedSongs')) || [];  // Load 
 
 // Fetch all songs from the server when the page loads
 function fetchAllSongs() {
+    rand_mp3();
+
     fetch('search.php')
         .then(response => {
             if (!response.ok) {
@@ -43,7 +45,7 @@ function filterSongs(query) {
             resultsDiv.appendChild(songElement);
         });
     } else {
-        resultsDiv.textContent = "No results found.";
+        resultsDiv.textContent = "No liked songs found.";
     }
 }
 
@@ -53,10 +55,16 @@ function filterLikedSongs(query) {
     resultsDiv.innerHTML = ""; // Clear previous results
 
     if (!query.trim()) {
-        resultsDiv.textContent = "Start typing to search for liked songs!";
+        if (likedSongs.length === 0) {
+            resultsDiv.textContent = "No liked songs yet!";
+        } else {
+            likedSongs.forEach(song => {
+                const songElement = createSongRow(song);
+                resultsDiv.appendChild(songElement);
+            });
+        }
         return;
     }
-
     // Filter the likedSongs array based on the query
     const filteredLikedSongs = likedSongs.filter(song =>
         song.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -104,17 +112,26 @@ function createSongRow(song) {
 
     // Toggle button for like/unlike
     const toggleButton = document.createElement("button");
-    toggleButton.textContent = likedSongs.some(
+    const isLiked = likedSongs.some(
         likedSong => likedSong.name === song.name && likedSong.artist === song.artist
-    )
-        ? "-"
-        : "+";
+    );
+
+    toggleButton.textContent = isLiked ? "-" : "+";
+    if (isLiked) {
+        toggleButton.classList.add("red-button"); // Add red class if already liked
+    }
 
     toggleButton.addEventListener("click", () => {
         toggleLikeStatus(song);
-        toggleButton.textContent =
-            toggleButton.textContent === "+" ? "-" : "+";
+        if (toggleButton.textContent === "+") {
+            toggleButton.textContent = "-";
+            toggleButton.classList.add("red-button"); // Turn button red
+        } else {
+            toggleButton.textContent = "+";
+            toggleButton.classList.remove("red-button"); // Remove red
+        }
     });
+
 
     actionColumn.appendChild(toggleButton);
 
@@ -330,6 +347,41 @@ function albumRankings() {
             const tile1 = document.getElementById("tile-3");
             tile1.innerHTML = "<p>Error fetching data.</p>";
         });
+}
+
+function rand_mp3(){
+    const bgm = document.getElementById("backgroundMusic");
+    const art = document.getElementById("albumArt");
+    let x = Math.floor(Math.random() * (5 + 1));
+    console.log(x);
+
+    switch (x){
+        case 0:
+            bgm.src = "media/angel.mp3";
+            break;
+        case 1:
+            bgm.src = "media/smokin.mp3";
+            art.src = "media/silk.jpg";
+            break;
+        case 2:
+            bgm.src = "media/darling.mp3";
+            art.src= "media/art.jpg"
+            break;
+        case 3:
+            bgm.src = "media/luther.mp3";
+            art.src = "media/gnx.jpeg";
+            break;
+        case 4:
+            bgm.src = "media/ruthless.mp3";
+            art.src = "media/marias.jpg";
+            break;
+        case 5:
+            bgm.src = "media/mask.mp3";
+            art.src= "media/art.jpg"
+            break;
+    }
+    bgm.load();
+    bgm.play();
 }
 
 //fix sizing of song results, change add button to red once added,
