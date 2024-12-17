@@ -24,8 +24,8 @@
             <p>View current rankings!</p>
             </div>
             <div id="ranking-results"></div>
-            <div class="album-container">
-            <img  alt="album cover" class="albumCover" id="albumArt">
+            <div class="album-container2">
+            <img src="media/icon.png" alt="album cover" class="albumCover" id="albumArt">
             </div>
         </div>
 
@@ -37,7 +37,16 @@
                 </div>
                 <div class="results" id="result">
                 <!-- Dynamic search results will be displayed here -->
-                </div>
+                <div class="album-container">
+                <img src="media/gnx2.jpg" alt="GNX by Kendrick Lamar" class="albumCover" id="albumArt">
+            </div>
+            <div class="album-container">
+                <img src="media/chroma2.jpeg" alt="GNX by Kendrick Lamar" class="albumCover" id="albumArt">
+            </div>
+            <div class="album-container">
+                <img src="media/sos2.jpeg" alt="GNX by Kendrick Lamar" class="albumCover" id="albumArt">
+            </div>
+            </div>
         </div>
 
         <div class="tile" id="tile-3">

@@ -149,7 +149,7 @@ body {
 .song-action button {
     font-size: 1.2rem;
     padding: 5px 10px;
-    background-color: #bababa;
+    background-color: #c9c9c9;
     color: rgb(0, 0, 0);
     border: none;
     border-radius: 10px;
@@ -171,7 +171,7 @@ body {
     background-color: #5baf55;
 }
 .song-action button.red-button:hover {
-    background-color: #c01414;
+    background-color: #c82222;
 }
 
 .liked-songs {
@@ -230,13 +230,21 @@ body {
     color: #aaaaaa;
   }
 
+  .album-container2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    flex-grow: 1; /* Makes the album cover container take up the remaining space */
+    overflow: hidden; /* Ensures the image doesn't overflow its container */
+  }
   .album-container {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     flex-grow: 1; /* Makes the album cover container take up the remaining space */
-    overflow: hidden; /* Ensures the image doesn't overflow its container */
+    overflow: visible; /* Ensures the image doesn't overflow its container */
   }
   
   .albumCover {

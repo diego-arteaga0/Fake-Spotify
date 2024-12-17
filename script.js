@@ -97,7 +97,7 @@ function createSongRow(song) {
     nameElement.classList.add("song-name");
     nameElement.textContent = song.name;
 
-    // Artist name (smaller and light grey)
+    // Artist name (smaller and light grey, similar to Spotify)
     const artistElement = document.createElement("div");
     artistElement.classList.add("song-artist");
     artistElement.textContent = song.artist;
@@ -110,7 +110,7 @@ function createSongRow(song) {
     const actionColumn = document.createElement("div");
     actionColumn.classList.add("song-action");
 
-    // Toggle button for like/unlike
+    // Toggle button for like/unlike (to add to Liked Songs)
     const toggleButton = document.createElement("button");
     const isLiked = likedSongs.some(
         likedSong => likedSong.name === song.name && likedSong.artist === song.artist
@@ -118,7 +118,7 @@ function createSongRow(song) {
 
     toggleButton.textContent = isLiked ? "-" : "+";
     if (isLiked) {
-        toggleButton.classList.add("red-button"); // Add red class if already liked
+        toggleButton.classList.add("red-button"); // Make button red if already liked
     }
 
     toggleButton.addEventListener("click", () => {
@@ -247,7 +247,7 @@ function artistRankings() {
         });
 }
 
-//Show top/trending songs based on rankings (listens)
+//Show top/trending songs based on rankings (based off listens)
 function songRankings() {
     fetch("song.php")
         .then((response) => {
@@ -298,7 +298,7 @@ function songRankings() {
         });
 }
 
-//Show top/trending albums based on rankings (listens)
+//Show top/trending albums based on rankings (based off most listened-to song on album)
 function albumRankings() {
     fetch("album.php")
         .then((response) => {
@@ -349,6 +349,7 @@ function albumRankings() {
         });
 }
 
+//randomize the current playing song (currently only 6 songs)
 function rand_mp3(){
     const bgm = document.getElementById("backgroundMusic");
     const art = document.getElementById("albumArt");
@@ -358,31 +359,38 @@ function rand_mp3(){
     switch (x){
         case 0:
             bgm.src = "media/angel.mp3";
+            bgm.volume = 0.25;
             break;
         case 1:
             bgm.src = "media/smokin.mp3";
             art.src = "media/silk.jpg";
+            bgm.volume = 0.3;
             break;
         case 2:
             bgm.src = "media/darling.mp3";
             art.src= "media/art.jpg"
+            bgm.volume = 0.3;
+
             break;
         case 3:
             bgm.src = "media/luther.mp3";
             art.src = "media/gnx.jpeg";
+            bgm.volume = 0.3;
+
             break;
         case 4:
             bgm.src = "media/ruthless.mp3";
             art.src = "media/marias.jpg";
+            bgm.volume = 0.3;
+
             break;
         case 5:
             bgm.src = "media/mask.mp3";
             art.src= "media/art.jpg"
+            bgm.volume = 0.3;
+
             break;
     }
     bgm.load();
     bgm.play();
 }
-
-//fix sizing of song results, change add button to red once added,
-//figure out way to store liked songs
