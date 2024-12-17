@@ -1,2 +1,2 @@
 Rudimentary Spotify clone that works with MySQL database of songs, artists, and albums. Includes rankings, real-time search bar to display song results (filtered by song title, artist name, and album) as user types, and the ability to add songs to Liked Songs, which are saved to local storage.
-![Screenshot 2024-12-13 120645](https://github.com/user-attachments/assets/bce8c89f-564f-4a4d-bf47-d5a12dddeab9)
+![Screenshot 2024-12-16 161652](https://github.com/user-attachments/assets/e8f16e2f-1814-4f00-bb0c-738c3263f246)
