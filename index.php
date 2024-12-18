@@ -41,10 +41,13 @@
                 <img src="media/gnx2.jpg" alt="GNX by Kendrick Lamar" class="albumCover" id="albumArt">
             </div>
             <div class="album-container">
-                <img src="media/chroma2.jpeg" alt="GNX by Kendrick Lamar" class="albumCover" id="albumArt">
+                <img src="media/chroma2.jpeg" alt="Chromakopia Tour (Tyler, the Creator)" class="albumCover" id="albumArt">
             </div>
             <div class="album-container">
-                <img src="media/sos2.jpeg" alt="GNX by Kendrick Lamar" class="albumCover" id="albumArt">
+                <img src="media/sos2.jpeg" alt="SOS by SZA" class="albumCover" id="albumArt">
+            </div>
+            <div class="album-container">
+                <img src="media/mac.jpg" alt="Fleetwood Mac (Live in Concert)" class="albumCover" id="albumArt">
             </div>
             </div>
         </div>

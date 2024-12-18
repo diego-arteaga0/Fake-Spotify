@@ -359,35 +359,35 @@ function rand_mp3(){
     switch (x){
         case 0:
             bgm.src = "media/angel.mp3";
-            bgm.volume = 0.25;
+            bgm.volume = 0.2;
             break;
         case 1:
             bgm.src = "media/smokin.mp3";
             art.src = "media/silk.jpg";
-            bgm.volume = 0.3;
+            bgm.volume = 0.25;
             break;
         case 2:
             bgm.src = "media/darling.mp3";
             art.src= "media/art.jpg"
-            bgm.volume = 0.3;
+            bgm.volume = 0.25;
 
             break;
         case 3:
             bgm.src = "media/luther.mp3";
             art.src = "media/gnx.jpeg";
-            bgm.volume = 0.3;
+            bgm.volume = 0.25;
 
             break;
         case 4:
             bgm.src = "media/ruthless.mp3";
             art.src = "media/marias.jpg";
-            bgm.volume = 0.3;
+            bgm.volume = 0.25;
 
             break;
         case 5:
             bgm.src = "media/mask.mp3";
             art.src= "media/art.jpg"
-            bgm.volume = 0.3;
+            bgm.volume = 0.25;
 
             break;
     }
